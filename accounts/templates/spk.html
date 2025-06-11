@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>SPK Metode SAW</h2>
+
+<!-- Tombol untuk memulai proses SAW -->
+<form action="{% url 'spk_saw' %}" method="get">
+    <button type="submit" class="btn btn-primary">Proses SPK</button>
+</form>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Nama Pegawai</th>
+            <th>Pangkat/Golongan</th>
+            <th>Masa Kerja</th>
+            <th>Jumlah Keluarga</th>
+            <th>Gaji Pokok</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pegawai in pegawai_list %}
+        <tr>
+            <td>{{ pegawai.nama_lengkap }}</td>
+            <td>{{ pegawai.get_pangkat_golongan_display }}</td>
+            <td>{{ pegawai.masa_kerja }}</td>
+            <td>{{ pegawai.keluarga.count }}</td>
+            <td>Rp {{ pegawai.gaji_pokok|floatformat:"0" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

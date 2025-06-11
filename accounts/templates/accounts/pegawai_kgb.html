@@ -1,0 +1,38 @@
+{% extends "baru.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Daftar Pegawai yang Sudah Bisa Mengajukan KGB</h2>
+
+    {% if pegawai_kgb_list %}
+    <table class="table table-bordered mt-3">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nama</th>
+                <th>NIP</th>
+                <th>Pangkat / Gol. Ruang</th>
+                <th>TMT Golongan</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pegawai in pegawai_kgb_list %}
+            <tr>
+                <td>{{ pegawai.nama_lengkap }}</td>
+                <td>{{ pegawai.nip }}</td>
+                <td>{{ pegawai.get_pangkat_golongan_display }}</td>
+                <td>{{ pegawai.tmt_golongan }}</td>
+                <td>
+                    <a href="{% url 'pegawai_detail' pegawai.id %}" class="btn btn-primary">
+                        Ajukan KGB
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-center">Tidak ada pegawai yang memenuhi syarat KGB saat ini.</p>
+    {% endif %}
+</div>
+{% endblock %}

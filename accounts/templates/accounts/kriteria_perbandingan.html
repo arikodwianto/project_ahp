@@ -1,0 +1,109 @@
+{% extends 'admin.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-primary fw-bold">Tambah Kriteria</h2>
+
+  <!-- Tombol buka modal -->
+  <button type="button" class="btn btn-success mb-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahKriteriaModal">
+    <i class="bi bi-plus-lg me-2"></i> Tambah Kriteria
+  </button>
+
+  <!-- Modal Tambah Kriteria -->
+  <div class="modal fade" id="tambahKriteriaModal" tabindex="-1" aria-labelledby="tambahKriteriaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow-sm">
+        <form method="post" novalidate>
+          {% csrf_token %}
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="tambahKriteriaLabel">Tambah Kriteria Baru</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              {{ kriteria_form.nama.label_tag }}
+              {{ kriteria_form.nama }}
+              {% if kriteria_form.nama.errors %}
+              <div class="text-danger small mt-1">{{ kriteria_form.nama.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" name="submit_kriteria" class="btn btn-success">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mt-5 mb-3 text-primary fw-bold">Perbandingan Berpasangan Kriteria AHP</h2>
+  {% if perbandingan_form.fields %}
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="table-responsive shadow-sm rounded">
+      <table class="table table-striped table-hover align-middle mb-4">
+        <thead class="table-primary">
+          <tr>
+            <th>Kriteria 1</th>
+            <th>Nilai Perbandingan</th>
+            <th>Kriteria 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for field in perbandingan_form %}
+          <tr>
+            <td><strong>{{ field.field.label_left }}</strong></td>
+            <td style="min-width: 180px;">
+              {{ field }}
+              <small class="text-muted d-block selected-description" id="desc_{{ field.auto_id }}"></small>
+            </td>
+            <td><strong>{{ field.field.label_right }}</strong></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <button type="submit" name="submit_perbandingan" class="btn btn-primary btn-lg shadow-sm">
+      <i class="bi bi-save2 me-2"></i> Simpan Perbandingan
+    </button>
+  </form>
+  {% else %}
+  <p class="text-muted fst-italic">Tambahkan minimal 2 kriteria untuk dapat melakukan perbandingan.</p>
+  {% endif %}
+</div>
+
+<!-- Script untuk deskripsi nilai perbandingan -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const descriptions = {
+    1: "Sama penting",
+    2: "Sedikit lebih penting",
+    3: "Lebih penting",
+    4: "Lebih dari cukup penting",
+    5: "Sangat penting",
+    6: "Antara sangat dan sangat sekali penting",
+    7: "Sangat sekali penting",
+    8: "Antara sangat sekali dan ekstrim",
+    9: "Ekstrim penting"
+  };
+
+  const selects = document.querySelectorAll("select");
+
+  selects.forEach(function (select) {
+    const descSpan = document.getElementById("desc_" + select.id);
+    const updateDescription = () => {
+      const value = select.value;
+      descSpan.textContent = value ? `${value} - ${descriptions[value]}` : '';
+    };
+
+    updateDescription();
+    select.addEventListener("change", updateDescription);
+  });
+});
+</script>
+
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+{% endblock %}

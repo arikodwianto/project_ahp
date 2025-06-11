@@ -1,0 +1,77 @@
+{% extends "admin.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Dashboard Admin - Kelola Pegawai</h2>
+<h2>Daftar Kegiatan Bidang {{ request.user.bidang }}</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Kode Kegiatan</th>
+            <th>Nama Kegiatan</th>
+            <th>Kode Sub Kegiatan</th>
+            <th>Nama Sub Kegiatan</th>
+            <th>Kode Rekening</th>
+            <th>Nama Rekening</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for kegiatan in kegiatan_list %}
+        <tr>
+            <td>{{ kegiatan.kode_kegiatan }}</td>
+            <td>{{ kegiatan.nama_kegiatan }}</td>
+            <td>{{ kegiatan.kode_sub_kegiatan }}</td>
+            <td>{{ kegiatan.nama_sub_kegiatan }}</td>
+            <td>{{ kegiatan.kode_rekening }}</td>
+            <td>{{ kegiatan.nama_rekening }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">Belum ada data kegiatan.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Ketika tombol Edit diklik
+        document.querySelectorAll(".edit-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                let pegawaiId = this.getAttribute("data-id");
+    
+                // Ambil data pegawai via AJAX
+                fetch(`/edit_pegawai/${pegawaiId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById("editPegawaiContent").innerHTML = data.data;
+                            document.getElementById("editPegawaiForm").setAttribute("data-id", pegawaiId);
+                        }
+                    });
+            });
+        });
+    
+        // Proses update pegawai
+        document.getElementById("editPegawaiForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            let pegawaiId = this.getAttribute("data-id");
+            let formData = new FormData(this);
+    
+            fetch(`/edit_pegawai/${pegawaiId}/`, {
+                method: "POST",
+                body: formData,
+                headers: { "X-CSRFToken": "{{ csrf_token }}" }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                }
+            });
+        });
+    });
+    </script>
+    
+{% endblock %}

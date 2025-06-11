@@ -1,0 +1,73 @@
+{% extends 'admin.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-3">Tentang AHP dan Skala Saaty</h2>
+  
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5>Apa itu AHP?</h5>
+      <p>
+        Analytic Hierarchy Process (AHP) adalah metode pengambilan keputusan yang dikembangkan oleh Thomas L. Saaty pada 1970-an. 
+        Metode ini membantu pengambil keputusan dalam menyusun dan menganalisis kompleksitas masalah dengan cara memecahnya menjadi beberapa 
+        tingkatan hierarki yang lebih sederhana, mulai dari tujuan utama, kriteria, subkriteria (jika ada), hingga alternatif keputusan.
+      </p>
+      <p>
+        AHP menggunakan perbandingan berpasangan antar elemen dalam suatu level untuk menentukan bobot prioritas relatif. 
+        Dengan demikian, keputusan dibuat berdasarkan nilai bobot yang diperoleh setelah melakukan perbandingan dan perhitungan konsistensi.
+      </p>
+      <p>
+        Metode ini sangat berguna untuk masalah keputusan multi-kriteria dan telah banyak diterapkan di berbagai bidang, seperti manajemen, 
+        perencanaan anggaran, pemilihan proyek, dan lainnya.
+      </p>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5>Skala Saaty</h5>
+      <p>Skala Saaty digunakan dalam AHP untuk mengukur tingkat kepentingan relatif antara dua elemen pada perbandingan berpasangan. Berikut tabel skala penilaian tersebut:</p>
+      <table class="table table-bordered text-center">
+        <thead class="table-light">
+          <tr>
+            <th>Nilai</th>
+            <th>Makna</th>
+            <th>Deskripsi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Sama penting</td>
+            <td>Kedua elemen memiliki bobot yang setara dalam pengambilan keputusan.</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Sedikit lebih penting</td>
+            <td>Satu elemen sedikit lebih diprioritaskan dibanding elemen lainnya.</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Lebih penting</td>
+            <td>Satu elemen jelas lebih penting dibanding yang lain.</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Sangat penting</td>
+            <td>Satu elemen sangat dominan dalam perbandingan.</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Mutlak sangat penting</td>
+            <td>Satu elemen mutlak lebih penting dibanding elemen lainnya.</td>
+          </tr>
+          <tr>
+            <td>2,4,6,8</td>
+            <td>Nilai antara</td>
+            <td>Nilai antara dua angka utama untuk mengekspresikan nilai kepentingan yang menengah.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

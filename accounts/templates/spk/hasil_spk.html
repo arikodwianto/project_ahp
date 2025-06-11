@@ -1,0 +1,18 @@
+{% if data_saw_list %}
+    <table border="1">
+        <tr>
+            <th>No</th>
+            <th>Pegawai</th>
+            <th>Nilai SAW</th>
+        </tr>
+        {% for data in data_saw_list %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ data.pegawai.nama }}</td>
+            <td>{{ data.nilai_akhir|default:"-" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>Tidak ada data perhitungan SAW.</p>
+{% endif %}

@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+   <link rel="shortcut icon" href="{% static 'assets/images/sprites/2.png' %}">
+  <title>Login AHP - Dinas PUPRP Bintan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: url("{% static 'img/pu.jpg' %}") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      max-width: 1000px;
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .info-section, .login-section {
+      flex: 1;
+      padding: 40px;
+      color: #111;
+    }
+
+    .info-section h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #111;
+    }
+
+    .info-section p, .info-section ul {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #111;
+    }
+
+    .info-section ul {
+      padding-left: 20px;
+    }
+
+    .login-section {
+      background: rgba(255, 255, 255, 0.6);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #000;
+    }
+
+    .login-section img.logo {
+      width: 80px;
+      margin-bottom: 15px;
+    }
+
+    .login-section h2 {
+      font-size: 20px;
+      color: #000;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    form {
+      width: 100%;
+      max-width: 300px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 10px;
+      font-weight: 500;
+      color: #000;
+    }
+
+    input {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      background: #3a7bd5;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #2968c8;
+    }
+
+    .error {
+      color: #e74c3c;
+      font-size: 13px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .info-section, .login-section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="info-section">
+      <h1>IMPLEMENTASI METODE AHP</h1>
+      <p><strong>Analytic Hierarchy Process (AHP)</strong> adalah metode pengambilan keputusan multikriteria yang digunakan untuk menentukan prioritas suatu kegiatan berdasarkan beberapa kriteria yang saling berkaitan.</p>
+      <p>Dalam sistem ini, AHP digunakan untuk membantu Dinas PUPRP Kabupaten Bintan dalam menentukan prioritas perencanaan anggaran kegiatan secara objektif, terukur, dan transparan.</p>
+      <p>Manfaat utama AHP meliputi:</p>
+      <ul>
+        <li>Mempermudah proses pengambilan keputusan kompleks.</li>
+        <li>Menggabungkan pertimbangan kuantitatif dan kualitatif.</li>
+        <li>Menjamin konsistensi logika dalam penentuan prioritas.</li>
+      </ul>
+    </div>
+
+    <div class="login-section">
+      <img src="{% static 'assets/images/sprites/2.png' %}" alt="Logo Dinas PUPRP" class="logo">
+      <h2>Login Pengguna</h2>
+      <form method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Login</button>
+        <div class="error" id="error-message"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.querySelector("form");
+      const errorDiv = document.getElementById("error-message");
+
+      form.addEventListener("submit", function (event) {
+        const username = document.querySelector("#username").value.trim();
+        const password = document.querySelector("#password").value.trim();
+
+        if (!username || !password) {
+          event.preventDefault();
+          errorDiv.textContent = "Username dan password wajib diisi!";
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

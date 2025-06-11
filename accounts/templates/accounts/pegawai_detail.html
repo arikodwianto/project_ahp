@@ -1,0 +1,355 @@
+{% extends "baru.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% if can_apply_kgb %}
+    <h3 class="mt-4">Ajukan Kenaikan Gaji Berkala untuk {{ pegawai.nama }}</h3>
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Ajukan KGB</button>
+            </form>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-danger mt-4" role="alert">
+        Pegawai {{ pegawai.nama_lengkap }} belum bisa mengajukan KGB. Tunggu hingga 2 tahun setelah TMT.
+    </div>
+{% endif %}
+
+
+
+<div class="container mt-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800"></h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item">Data Master</li>
+            <li class="breadcrumb-item active" aria-current="page">Jenis</li>
+        </ul>
+    </div>
+   
+    
+   <div class="card shadow-lg rounded-3">
+    <div class="card-header bg-primary text-white">
+        <h2 class="mb-0 text-center">Detail Pegawai</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                {% if pegawai.foto_profil %}
+                    <img src="{{ pegawai.foto_profil.url }}" alt="Foto Profil" 
+                         class="img-thumbnail rounded-circle shadow-sm" 
+                         style="width: 200px; height: 200px; object-fit: cover;">
+                {% else %}
+                    <div class="text-muted fst-italic mt-3">Foto belum diunggah</div>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                        <tr><th>Nama</th><td>{{ pegawai.nama_lengkap }}</td></tr>
+                        <tr><th>NIK</th><td>{{ pegawai.nik }}</td></tr>
+                        <tr><th>Email</th><td>{{ pegawai.email }}</td></tr>
+                        <tr><th>NIP</th><td>{{ pegawai.nip|default:"-" }}</td></tr>
+                        <tr><th>Pangkat/Golongan</th><td>{{ pegawai.get_pangkat_golongan_display }}</td></tr>
+                        <tr><th>TMT Golongan</th><td>{{ pegawai.tmt_golongan }}</td></tr>
+                        <tr><th>Tempat/Tanggal Lahir</th><td>{{ pegawai.tempat_tanggal_lahir }}</td></tr>
+                        <tr><th>Jenis Kelamin</th><td>{{ pegawai.jenis_kelamin }}</td></tr>
+                        <tr><th>Agama/Kebangsaan</th><td>{{ pegawai.agama_kebangsaan }}</td></tr>
+                        <tr><th>Alamat Lengkap</th><td>{{ pegawai.alamat_lengkap }}</td></tr>
+                        <tr><th>TMT Capeg</th><td>{{ pegawai.tmt_capeg }}</td></tr>
+                        <tr><th>Gaji Pokok</th><td>Rp {{ pegawai.gaji_pokok|intcomma }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+
+<div class="card mt-4 shadow-lg rounded-3">
+    <div class="card-header bg-success text-white">
+        <h3 class="mb-0 text-center">Riwayat Keluarga</h3>
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-between mb-3">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambahKeluarga">
+                + Tambah Riwayat Keluarga
+            </button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-primary text-dark text-center">
+                    <tr>
+                        <th>Nama</th>
+                        <th>Hubungan</th>
+                        <th>Tanggal Lahir</th>
+                        <th>Kartu Nikah</th>
+                        <th>Kartu Keluarga</th>
+                        <th>Ijazah</th>
+                        <th>KTP</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for anggota in riwayat_keluarga %}
+                    <tr>
+                        <td>{{ anggota.nama }}</td>
+                        <td class="text-center">{{ anggota.hubungan }}</td>
+                        <td class="text-center">{{ anggota.tanggal_lahir|date:"d M Y" }}</td>
+                        <td class="text-center">
+                            {% if anggota.kartu_nikah %}
+                                <a href="{{ anggota.kartu_nikah.url }}" target="_blank" class="btn btn-primary btn-sm">Lihat</a>
+                            {% else %}
+                                <span class="text-danger">Belum diunggah</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if anggota.kartu_keluarga %}
+                                <a href="{{ anggota.kartu_keluarga.url }}" target="_blank" class="btn btn-primary btn-sm">Lihat</a>
+                            {% else %}
+                                <span class="text-danger">Belum diunggah</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if anggota.ijazah_sd %}
+                                <a href="{{ anggota.ijazah_sd.url }}" target="_blank" class="btn btn-primary btn-sm">Lihat</a>
+                            {% else %}
+                                <span class="text-danger">Belum diunggah</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if anggota.ktp %}
+                                <a href="{{ anggota.ktp.url }}" target="_blank" class="btn btn-primary btn-sm">Lihat</a>
+                            {% else %}
+                                <span class="text-danger">Belum diunggah</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2">
+                                <button class="btn btn-warning btn-sm btn-edit"
+                                    data-id="{{ anggota.id }}"
+                                    data-url="{% url 'edit_riwayat_keluarga' anggota.id %}"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEditKeluarga">
+                                    Edit
+                                </button>
+                                <button class="btn btn-danger btn-sm btn-delete"
+                                    data-id="{{ anggota.id }}"
+                                    data-url="{% url 'delete_riwayat_keluarga' anggota.id %}">
+                                    Hapus
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted">Belum ada riwayat keluarga.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Menambahkan jarak antara Riwayat Keluarga dan Tabel Gaji -->
+<div class="mt-5"></div>
+
+<!-- Tabel Gaji -->
+<div class="card shadow-lg rounded-3">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0 text-center">Detail Gaji</h3>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Deskripsi</th>
+                    <th>Jumlah (Rp)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Gaji Pokok</strong></td>
+                    <td class="text-end">{{ gaji_pokok|floatformat:0 }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Potongan BPJS</strong></td>
+                    <td class="text-end">{{ potongan_bpjs|floatformat:0 }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Potongan Tanggungan</strong></td>
+                    <td class="text-end">{{ potongan_tanggungan|floatformat:0 }}</td>
+                </tr>
+                <tr class="table-warning">
+                    <td><strong>Total Potongan</strong></td>
+                    <td class="text-end">{{ total_potongan|floatformat:0 }}</td>
+                </tr>
+                <tr class="table-success">
+                    <td><strong>Gaji Bersih</strong></td>
+                    <td class="text-end"><strong>{{ gaji_bersih|floatformat:0 }}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+    
+    <hr>
+   <!-- Modal Pop-up -->
+<div class="modal fade" id="modalTambahKeluarga" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Tambah Riwayat Keluarga</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formKeluarga" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary" onclick="return confirm('Yakin Tambah Data Keluarga?');">Simpan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4 shadow-lg rounded-3">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0 text-center">Daftar Berkas Pegawai</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-success text-dark text-center">
+                    <tr>
+                        <th>Jenis Berkas</th>
+                        <th>File</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for jenis, file_url in pegawai.get_berkas.items %}
+                        <tr>
+                            <td class="text-center">{{ jenis }}</td>
+                            <td class="text-center">
+                                {% if file_url %}
+                                    <a href="{{ file_url }}" target="_blank" class="btn btn-primary btn-sm">Lihat Berkas</a>
+                                {% else %}
+                                    <span class="text-danger">Belum diunggah</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2" class="text-center text-muted">Belum ada berkas yang diunggah.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <div class="modal fade" id="modalEditKeluarga" tabindex="-1" aria-labelledby="modalLabelEdit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelEdit">Edit Riwayat Keluarga</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditKeluarga" method="post" enctype="multipart/form-data">
+                        <meta name="csrf-token" content="{{ csrf_token }}">
+
+                        {% csrf_token %}
+                        <input type="hidden" id="edit-id">
+                        <div id="form-edit-container"></div>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+{% endblock %}
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Submit tambah data keluarga
+        document.getElementById("formKeluarga").addEventListener("submit", function (event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+    
+            fetch(window.location.href, {
+                method: "POST",
+                body: formData,
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) location.reload();
+                else alert("Gagal menyimpan data: " + JSON.stringify(data.errors));
+            });
+        });
+    
+        document.addEventListener("DOMContentLoaded", function () {
+    // Edit Data Keluarga
+    document.querySelectorAll(".btn-edit").forEach(button => {
+        button.addEventListener("click", function () {
+            let editUrl = this.getAttribute("data-url");
+
+            fetch(editUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById("edit-id").value = data.id;
+                        document.getElementById("form-edit-container").innerHTML = data.form;
+                    } else {
+                        alert("Gagal memuat form edit");
+                    }
+                });
+        });
+    });
+
+    // Delete Data Keluarga
+    document.querySelectorAll(".btn-delete").forEach(button => {
+        button.addEventListener("click", function () {
+            let deleteUrl = this.getAttribute("data-url");
+            if (!confirm("Yakin ingin menghapus?")) return;
+
+            fetch(deleteUrl, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert("Gagal menghapus data.");
+                }
+            });
+        });
+    });
+});
+    });
+    </script>
+    

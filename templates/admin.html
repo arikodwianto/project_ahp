@@ -1,0 +1,296 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="{% static 'assets/images/sprites/2.png' %}">
+    <title>SPK KGB PUPRP Kab. Bintan </title>
+    <link href="{% static 'vendor2/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor2/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/ruang-admin.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor2/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+      html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+#content-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-wrapper {
+    flex-grow: 1;
+    padding-bottom: 20px; /* Tambahkan sedikit ruang agar footer tidak menempel ke konten */
+}
+
+.topbar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
+}
+
+.sticky-footer {
+    margin-top: auto;
+}
+
+        .form-error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+        .content-wrapper {
+    flex-grow: 1;
+    padding: 20px; /* Ruang dalam untuk konten */
+    padding-left: 30px; /* Menambah jarak dari sidebar */
+}
+
+    </style>
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+   <!-- Start Sidebar -->
+<ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+  <!-- Logo -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
+      <div class="sidebar-brand-icon">
+          <img src="{% static 'assets/images/sprites/2.png' %}">
+      </div>
+      <div class="sidebar-brand-text mx-3">PUPRP</div>
+  </a>
+
+  <hr class="sidebar-divider my-0">
+
+  <!-- Dashboard -->
+  <li class="nav-item active">
+      <a class="nav-link" href="{% url 'ahp_info' %} ">
+          <i class="fas fa-home" style="color: gray;"></i>
+          <span>Dashboard</span>
+      </a>
+  </li>
+
+  <hr class="sidebar-divider">
+
+  <!-- Data dan Informasi Pegawai -->
+  <div class="sidebar-heading">Data dan Informasi Pegawai</div>
+
+  <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
+          aria-expanded="true" aria-controls="collapseBootstrap">
+          <i class="fas fa-database" style="color: gray;"></i>
+          <span>Data Informasi Kegiatan</span>
+      </a>
+      <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Data Kegiatan </h6>
+              <a class="collapse-item" href="{% url 'jf_perencana_dashboard' %}">
+                  <i class="fas fa-user" style="color: gray;"></i> Kegiatan
+              </a>
+          </div>
+      </div>
+  </li>
+
+  <hr class="sidebar-divider">
+
+  <!-- Pegawai KGB -->
+  <div class="sidebar-heading">perhitungan AhP</div>
+
+  <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage"
+          aria-expanded="true" aria-controls="collapsePage">
+          <i class="fas fa-money-check-alt" style="color: gray;"></i>
+          <span>Perhitungan AHP</span>
+      </a>
+      <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Perhitungan Kriteria</h6>
+              <a class="collapse-item" href="{% url 'kriteria_perbandingan' %}">
+                  <i class="bi bi-people" style="color: gray;"></i> Perhitungan Kriteria
+
+              </a>
+          </div>
+      </div>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage"
+          aria-expanded="true" aria-controls="collapsePage">
+          <i class="fas fa-money-check-alt" style="color: gray;"></i>
+          <span>Hasil Perhitungan AHP</span>
+      </a>
+      <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Hasil Perhitungan AHP</h6>
+              <a class="collapse-item" href="{% url 'hasil_ahp' %}">
+                  <i class="bi bi-people" style="color: gray;"></i> Hasil Perhitungan Kriteria
+
+              </a>
+          </div>
+      </div>
+  </li>
+
+  <hr class="sidebar-divider">
+  
+  <div class="version" id="version-ruangadmin"></div>
+</ul>
+
+      <!-- End Sidebar -->
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- TopBar -->
+                <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <div class="bg-navbar text-white py-2 d-flex align-items-center w-100">
+                      <marquee behavior="scroll" direction="left" scrollamount="5" class="mr-auto">
+  Selamat datang di Sistem Prioritas Perencanaan Anggaran menggunakan Metode AHP pada Dinas Pekerjaan Umum Penataan Ruang dan Pertanahan Kabupaten Bintan. Pastikan data kegiatan Anda selalu akurat untuk hasil prioritas yang optimal.
+</marquee>
+
+                      <span id="clock" class="ml-3"></span>
+                  </div>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-profile rounded-circle" src="{% static 'img/boy.png' %}"
+                                    style="max-width: 60px">
+                                <span class="ml-2 d-none d-lg-inline text-white small">{{ user.username }}</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <!-- Logout Form -->
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item" onclick="return confirm('Yakin Ingin Keluar?');">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Topbar -->
+                <div class="main-panel">
+                    <div class="content-wrapper">
+                        {% block content %}
+                        {% endblock content %}
+                    </div>
+                </div>
+                <!-- Container Fluid-->
+          
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+              <div class="container my-auto">
+                  <div class="copyright text-center my-auto">
+                      <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - 
+                          <b><a href="https://indrijunanda.gitlab.io/" target="_blank">iSari Cell</a></b>
+                      </span>
+                  </div>
+              </div>
+          </footer>
+      <!-- Footer -->
+    </div>
+  </div>
+
+  <!-- Scroll to top -->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor2/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor2/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor2/jquery-easing/jquery.easing.min.js' %}"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/ruang-admin.min.js' %}"></script>
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor2/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor2/datatables/dataTables.bootstrap4.min.js' %}"></script>
+    <!-- Page level custom scripts -->
+    <script>
+        $(document).ready(function () {
+            $('#dataTableHover').DataTable(); // ID from dataTable with Hover
+        });
+    </script>
+   
+     <script>
+        $(document).ready(function () {
+            $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+        });
+    </script>
+   
+   <script>
+    function updateClock() {
+        var now = new Date();
+        var hours = now.getHours().toString().padStart(2, '0');
+        var minutes = now.getMinutes().toString().padStart(2, '0');
+        var seconds = now.getSeconds().toString().padStart(2, '0');
+        document.getElementById('clock').textContent = hours + ":" + minutes + ":" + seconds;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
+</body>
+
+</html>

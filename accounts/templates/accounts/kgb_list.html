@@ -1,0 +1,13 @@
+{% for submission in kgb_submissions %}
+<tr>
+    <td>{{ submission.pegawai.nama_lengkap }}</td>
+    <td>{{ submission.get_status_verifikasi_display }}</td>
+    <td>
+        {% if request.user.role == "kasubbag" and submission.status_verifikasi == "pending" %}
+            <a href="{% url 'verifikasi_kgb' submission.id %}" class="btn btn-success">
+                Verifikasi
+            </a>
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}

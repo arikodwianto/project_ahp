@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Selamat Datang di Dashboard Admin</h2>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card border-primary">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Pengguna</h5>
+                    <p class="display-4">{{ total_users }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card border-success">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Pegawai</h5>
+                    <p class="display-4">{{ total_pegawai }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

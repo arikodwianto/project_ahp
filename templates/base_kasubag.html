@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SPK KGB PUPRP Kab. Bintan</title>
+    
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="{% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendors/css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendors/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'assets/images/sprites/2.png' %}">
+    
+</head>
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center gap-3">
+        <a class="navbar-brand brand-logo" href="/">
+            <img src="{% static 'assets/images/sprites/2.png' %}" alt="Logo Besar" class="img-fluid" style="max-height: 50px;">
+        </a>
+        <a class="navbar-brand brand-logo-mini" href="index.html">
+            <img src="{% static 'assets/images/sprites/2.png' %}" alt="Logo Mini" class="img-fluid" style="max-height: 40px;">
+        </a>
+    </div>
+    
+      <div class="navbar-menu-wrapper d-flex align-items-stretch">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+          <span class="mdi mdi-menu"></span>
+      </button>
+        <!-- Teks berjalan untuk ucapan berdasarkan waktu -->
+        <div class="flex-grow-1 text-center">
+          <marquee id="greeting-text" behavior="scroll" direction="left" style="font-size: 16px; color: black; font-weight: bold; width: 100%;">
+              <!-- Teks akan diisi oleh JavaScript -->
+          </marquee>
+      </div>
+      
+       
+        <ul class="navbar-nav navbar-nav-right">
+          
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+              <div class="nav-profile-img">
+                <img src="{% static 'assets/images/faces/face28.png' %}" alt="image">
+              </div>
+              <div class="nav-profile-text">
+                <p class="mb-1 text-black"></p>
+              </div>
+            </a>
+            <div class="dropdown-menu navbar-dropdown dropdown-menu-right p-0 border-0 font-size-sm" aria-labelledby="profileDropdown" data-x-placement="bottom-end">
+              <div class="p-3 text-center bg-primary">
+                <img class="img-avatar img-avatar48 img-avatar-thumb" src="{% static 'assets/images/faces/face28.png' %}" alt="">
+              </div>
+              <div class="p-2">
+                
+                <a class="dropdown-item py-1 d-flex align-items-center justify-content-between" href="{% url 'logout' %}">
+                  <span>Log Out</span>
+                  <i class="mdi mdi-logout ml-1"></i>
+                </a>
+              </div>
+            </div>
+          </li>
+          
+         
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+
+        <!-- Sidebar -->
+        <div class="container-fluid page-body-wrapper">
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item nav-category"></li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'total_users' %}">
+                        <span class="icon-bg"><i class="mdi mdi-cube menu-icon"></i></span>
+                        <span class="menu-title">Dashboard</span>
+                    </a>
+                        <a class="nav-link" href="{% url 'kasubbag_dashboard' %}">
+                            <span class="icon-bg"><i class="mdi mdi-cube menu-icon"></i></span>
+                            <span class="menu-title">user</span>
+                        </a>
+                      
+                    </li>
+                    
+                </ul>
+            </nav>
+
+            <!-- Content -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    {% block content %}
+                    {% endblock content %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer mt-4">
+      <div class="footer-inner-wraper">
+        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+          <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+            Copyright © 2019 <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap Dash</a>. All rights reserved.
+          </span>
+          <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+            Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i>
+          </span>
+        </div>
+      </div>
+    </footer>
+    <!-- Bootstrap JS -->
+
+
+      <!-- plugins:js -->
+      <script src="{% static 'assets/vendors/js/vendor.bundle.base.js' %}"></script>
+      <!-- Plugin js for this page -->
+      <script src="{% static 'assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+      <script src="{% static 'assets/vendors/progressbar.js/progressbar.min.js' %}"></script>
+      <!-- Custom js for this page -->
+      <script src="{% static 'assets/js/off-canvas.js' %}"></script>
+      <script src="{% static 'assets/js/hoverable-collapse.js' %}"></script>
+      <script src="{% static 'assets/js/misc.js' %}"></script>
+      <script src="{% static 'assets/js/settings.js' %}"></script>
+      <script src="{% static 'assets/js/todolist.js' %}"></script>
+
+      <script>
+        function getGreeting() {
+            let hour = new Date().getHours();
+            if (hour >= 5 && hour < 12) {
+                return "Selamat Pagi";
+            } else if (hour >= 12 && hour < 15) {
+                return "Selamat Siang";
+            } else if (hour >= 15 && hour < 18) {
+                return "Selamat Sore";
+            } else {
+                return "Selamat Malam";
+            }
+        }
+    
+        // Ambil elemen marquee
+        let greetingText = document.getElementById("greeting-text");
+    
+        // Tampilkan teks berjalan dengan ucapan + nama pengguna
+        greetingText.innerText = "Selamat Datang! " + getGreeting() + ", {{ user.username }}!";
+    </script>
+</body>
+</html>

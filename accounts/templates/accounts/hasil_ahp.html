@@ -1,0 +1,65 @@
+{% extends 'admin.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-primary fw-bold">Hasil Perhitungan AHP</h2>
+
+  <!-- Daftar Kriteria dalam Card -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Daftar Kriteria</h4>
+    </div>
+    <div class="card-body">
+      {% if kriteria %}
+      <ul class="list-group list-group-flush">
+        {% for k in kriteria %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <i class="bi bi-check-circle-fill text-success"></i> {{ k.nama }}
+          </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-muted fst-italic">Belum ada kriteria</p>
+      {% endif %}
+    </div>
+  </div>
+
+ <!-- Tabel Perbandingan Kriteria -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Perbandingan Kriteria</h4>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-bordered mb-0">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Kriteria 1</th>
+            <th scope="col">Kriteria 2</th>
+            <th scope="col">Nilai Perbandingan</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if perbandingan %}
+            {% for p in perbandingan %}
+            <tr>
+              <td>{{ p.kriteria_1.nama }}</td>
+              <td>{{ p.kriteria_2.nama }}</td>
+              <td>{{ p.nilai }}</td>
+            </tr>
+            {% endfor %}
+          {% else %}
+          <tr>
+            <td colspan="3" class="text-center text-muted fst-italic">Belum ada data perbandingan</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  
+
+<!-- Optional: Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+{% endblock %}

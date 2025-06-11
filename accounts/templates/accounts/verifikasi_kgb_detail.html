@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Detail Pengajuan KGB</h2>
+
+<table class="table">
+    <tr>
+        <th>Nama Pegawai</th>
+        <td>{{ submission.pegawai.nama }}</td>
+    </tr>
+    <tr>
+        <th>NIP</th>
+        <td>{{ submission.pegawai.nip }}</td>
+    </tr>
+    <tr>
+        <th>Tanggal Pengajuan</th>
+        <td>{{ submission.created_at }}</td>
+    </tr>
+    <tr>
+        <th>Berkas</th>
+        <td><a href="{{ submission.berkas.url }}" target="_blank">Lihat Berkas</a></td>
+    </tr>
+</table>
+
+<<form method="post" style="{% if not berkas_terbuka %}display: none;{% endif %}" id="verifikasiForm">
+    {% csrf_token %}
+    <button type="submit" name="action" value="approve" class="btn btn-success">✅ Setujui</button>
+    <button type="submit" name="action" value="reject" class="btn btn-danger">❌ Tolak</button>
+</form>
+
+<script>
+    function tandaiBerkasDibuka() {
+        fetch("?lihat_berkas=true")  // Panggil URL dengan parameter lihat_berkas
+            .then(() => location.reload()); // Reload halaman untuk menampilkan tombol verifikasi
+    }
+</script>
+
+<a href="{% url 'kasubbag_dashboard' %}" class="btn btn-secondary mt-3">Kembali</a>
+{% endblock %}

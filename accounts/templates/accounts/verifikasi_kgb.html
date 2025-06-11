@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Verifikasi KGB - {{ submission.pegawai.nama_lengkap }}</h2>
+
+<table border="1">
+    <tr>
+        <th>Pegawai</th>
+        <td>{{ submission.pegawai.nama_lengkap }}</td>
+    </tr>
+    <tr>
+        <th>Pangkat/Golongan</th>
+        <td>{{ submission.pegawai.get_pangkat_golongan_display }}</td>
+    </tr>
+    <tr>
+        <th>Berkas</th>
+        <td>
+            <a href="{{ submission.berkas_surat_pengantar.url }}" target="_blank">Surat Pengantar</a><br>
+            <a href="{{ submission.berkas_sk_cpns.url }}" target="_blank">SK CPNS</a><br>
+            <a href="{{ submission.berkas_sk_pns.url }}" target="_blank">SK PNS</a><br>
+            <a href="{{ submission.berkas_sk_kp_terakhir.url }}" target="_blank">SK KP Terakhir</a><br>
+            <a href="{{ submission.berkas_surat_pemberitahuan_kgb.url }}" target="_blank">Surat Pemberitahuan KGB</a><br>
+            <a href="{{ submission.berkas_skp_2_tahun.url }}" target="_blank">SKP 2 Tahun</a>
+        </td>
+    </tr>
+</table>
+
+<hr>
+
+<form method="POST">
+    {% csrf_token %}
+    <label>Status Verifikasi:</label><br>
+    <select name="status">
+        <option value="approved">Setujui</option>
+        <option value="rejected">Tolak</option>
+    </select><br><br>
+
+    <label>Catatan Verifikasi:</label><br>
+    <textarea name="catatan" rows="4"></textarea><br><br>
+
+    <button type="submit">Simpan Verifikasi</button>
+</form>
+
+<a href="{% url 'kasubbag_dashboard' %}"><button>Kembali</button></a>
+{% endblock %}

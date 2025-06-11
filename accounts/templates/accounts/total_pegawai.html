@@ -1,0 +1,51 @@
+{% extends "baru.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Papan Penjelas SPK KGB -->
+    <div class="row justify-content-center">
+        <div class="col-xl-10 col-md-12 mb-4">
+            <div class="card shadow-lg border-info rounded-4">
+                <div class="card-body py-4">
+                    <h3 class="text-info fw-bold text-center mb-3">📌 Sistem Pendukung Keputusan KGB</h3>
+                    <p class="text-gray-700 text-center" style="font-size: 1.1rem;">
+                        Sistem Pendukung Keputusan <strong>(SPK) Kenaikan Gaji Berkala (KGB)</strong> membantu dalam 
+                        menentukan pegawai yang memenuhi syarat kenaikan gaji berdasarkan masa kerja dan regulasi yang berlaku. 
+                        <br><br>
+                        Setiap pegawai yang telah bekerja selama <strong>2 tahun</strong> dan memenuhi kriteria tertentu akan 
+                        mendapatkan notifikasi dan diproses oleh Kepala Sub Bagian Umum.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kartu Total Pegawai -->
+    <div class="row justify-content-center">
+        <div class="col-xl-5 col-md-6 mb-4">
+            <div class="card shadow-lg border-primary rounded-4">
+                <div class="card-body py-5 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-uppercase text-primary fw-bold mb-3" style="font-size: 1.3rem;">Total Pegawai</div>
+                        <div class="h1 fw-bold text-gray-800">{{ total_pegawai }}</div>
+                    </div>
+                    <i class="fas fa-users fa-5x text-primary"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kartu Pegawai yang Memenuhi Syarat KGB -->
+        <div class="col-xl-5 col-md-6 mb-4">
+            <div class="card shadow-lg border-success rounded-4">
+                <div class="card-body py-5 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-uppercase text-success fw-bold mb-3" style="font-size: 1.3rem;">Pegawai yang Mengajukan Syarat KGB</div>
+                        <div class="h1 fw-bold text-gray-800">{{ total_pegawai_kgb }}</div>
+                    </div>
+                    <i class="fas fa-user-check fa-5x text-success"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
