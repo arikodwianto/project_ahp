@@ -57,6 +57,36 @@
     </div>
   </div>
 
+<!-- Tabel Bobot Kriteria -->
+<div class="card shadow-sm mt-4">
+  <div class="card-header bg-success text-white">
+    <h4 class="mb-0">Bobot Kriteria</h4>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-bordered mb-0">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">Kriteria</th>
+          <th scope="col">Bobot</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if bobot_kriteria %}
+          {% for b in bobot_kriteria %}
+          <tr>
+            <td>{{ b.kriteria }}</td>
+            <td>{{ b.bobot }}</td>
+          </tr>
+          {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="2" class="text-center text-muted fst-italic">Belum ada bobot</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
   
 

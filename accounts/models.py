@@ -90,6 +90,15 @@ class PerbandinganKriteria(models.Model):
         return f"{self.kriteria_1} vs {self.kriteria_2} = {self.nilai}"
 
 
+class BobotKriteria(models.Model):
+    kriteria = models.ForeignKey(Kriteria, on_delete=models.CASCADE)
+    nilai_bobot = models.FloatField()
+
+    def __str__(self):
+        return f"{self.kriteria.nama}: {self.nilai_bobot:.4f}"
+
+
+
 
 
 

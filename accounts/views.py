@@ -179,43 +179,65 @@ def ahp_info(request):
     return render(request, 'accounts/ahp_info.html')
 
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from .models import Kriteria, PerbandinganKriteria
+from .forms import KriteriaForm, PerbandinganKriteriaForm
+
 @login_required
 def kriteria_dan_perbandingan(request):
-    # Cek apakah user adalah JF Perencana
+    # Akses hanya untuk JF Perencana
     if not hasattr(request.user, 'role') or request.user.role != 'jf_perencana':
         return HttpResponseForbidden("Anda tidak memiliki akses ke halaman ini.")
 
-    # Form tambah kriteria
+    # Ambil semua kriteria
+    list_kriteria = Kriteria.objects.all().order_by('id')
+    edit_kriteria = None
+
+    # === Hapus Kriteria ===
+    if 'hapus_kriteria' in request.GET:
+        kriteria = get_object_or_404(Kriteria, id=request.GET.get('hapus_kriteria'))
+        kriteria.delete()
+        return redirect('kriteria_perbandingan')
+
+    # === Edit Kriteria ===
+    if 'edit_kriteria' in request.GET:
+        edit_kriteria = get_object_or_404(Kriteria, id=request.GET.get('edit_kriteria'))
+
+    # === Tambah/Ubah Kriteria ===
     if request.method == 'POST' and 'submit_kriteria' in request.POST:
-        kriteria_form = KriteriaForm(request.POST)
+        if request.POST.get('id'):
+            kriteria = get_object_or_404(Kriteria, id=request.POST.get('id'))
+            kriteria_form = KriteriaForm(request.POST, instance=kriteria)
+        else:
+            kriteria_form = KriteriaForm(request.POST)
+
         if kriteria_form.is_valid():
             kriteria_form.save()
             return redirect('kriteria_perbandingan')
     else:
-        kriteria_form = KriteriaForm()
+        kriteria_form = KriteriaForm(instance=edit_kriteria)
 
-    # Form input perbandingan kriteria
+    # === Form Perbandingan Kriteria ===
     if request.method == 'POST' and 'submit_perbandingan' in request.POST:
         perbandingan_form = PerbandinganKriteriaForm(request.POST)
         if perbandingan_form.is_valid():
             PerbandinganKriteria.objects.all().delete()
-
             kriteria = list(Kriteria.objects.all())
             for i in range(len(kriteria)):
                 for j in range(i+1, len(kriteria)):
                     field_name = f'kriteria_{kriteria[i].id}_vs_{kriteria[j].id}'
                     nilai = float(perbandingan_form.cleaned_data[field_name])
-
                     PerbandinganKriteria.objects.create(
                         kriteria_1=kriteria[i],
                         kriteria_2=kriteria[j],
                         nilai=nilai
                     )
-                    # Resiprokal
                     PerbandinganKriteria.objects.create(
                         kriteria_1=kriteria[j],
                         kriteria_2=kriteria[i],
-                        nilai=1/nilai
+                        nilai=1 / nilai
                     )
             return redirect('hasil_ahp')
     else:
@@ -224,22 +246,51 @@ def kriteria_dan_perbandingan(request):
     return render(request, 'accounts/kriteria_perbandingan.html', {
         'kriteria_form': kriteria_form,
         'perbandingan_form': perbandingan_form,
+        'list_kriteria': list_kriteria,
+        'edit_kriteria': edit_kriteria
     })
 
 
-def hasil_ahp(request):
-    # Ambil semua kriteria dan perbandingan
-    kriteria = Kriteria.objects.all()
-    perbandingan = PerbandinganKriteria.objects.all()
 
-    # Kamu bisa proses perhitungan AHP di sini sesuai kebutuhanmu
+
+from django.shortcuts import render
+from .models import Kriteria, PerbandinganKriteria, BobotKriteria
+import numpy as np
+
+def hasil_ahp(request):
+    kriteria = list(Kriteria.objects.all())
+    n = len(kriteria)
+
+    # Matriks Perbandingan
+    matrix = np.ones((n, n))
+
+    for i in range(n):
+        for j in range(n):
+            if i != j:
+                try:
+                    nilai = PerbandinganKriteria.objects.get(kriteria_1=kriteria[i], kriteria_2=kriteria[j]).nilai
+                    matrix[i][j] = nilai
+                except PerbandinganKriteria.DoesNotExist:
+                    matrix[i][j] = 1  # default jika tidak ditemukan
+    # Normalisasi matriks dan hitung bobot
+    row_geom_mean = np.prod(matrix, axis=1) ** (1/n)
+    weights = row_geom_mean / np.sum(row_geom_mean)
+
+    bobot_kriteria = []
+    for i in range(n):
+        bobot_kriteria.append({
+            'kriteria': kriteria[i].nama,
+            'bobot': round(weights[i], 4)
+        })
 
     context = {
         'kriteria': kriteria,
-        'perbandingan': perbandingan,
-        # tambahkan hasil perhitungan AHP kalau sudah diproses
+        'perbandingan': PerbandinganKriteria.objects.all(),
+        'bobot_kriteria': bobot_kriteria
     }
     return render(request, 'accounts/hasil_ahp.html', context)
+
+
 
 @login_required
 def admin_bidang_dashboard(request):
