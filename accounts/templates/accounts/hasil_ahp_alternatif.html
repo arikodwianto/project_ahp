@@ -1,0 +1,18 @@
+{% extends "admin.html" %}
+<h2>Hasil AHP Alternatif</h2>
+{% for hasil_krit in hasil %}
+    <h3>Kriteria: {{ hasil_krit.kriteria.nama }}</h3>
+    <table border="1">
+        <tr>
+            <th>Alternatif</th>
+            <th>Bobot</th>
+        </tr>
+        {% for item in hasil_krit.hasil_kriteria %}
+            <tr>
+                <td>{{ item.alternatif.penggunaan.nama_penggunaan }}</td>
+                <td>{{ item.bobot }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endfor %}
+{% endblock %}

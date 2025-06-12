@@ -14,7 +14,7 @@
         {% endfor %}
     {% endif %}
 
-    <!-- Tombol untuk memunculkan modal -->
+    <!-- Tombol untuk memunculkan modal tambah -->
     <div class="mb-3">
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahUserModal">
             Tambah User
@@ -36,7 +36,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" name="save_user" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -57,6 +57,7 @@
                             <th>Email</th>
                             <th>Role</th>
                             <th>Bidang</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,9 +67,50 @@
                                 <td>{{ user.email }}</td>
                                 <td>{{ user.get_role_display }}</td>
                                 <td>{{ user.get_bidang_display|default:"-" }}</td>
+                                <td>
+                                    <!-- Edit button (memunculkan modal) -->
+                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal{{ user.id }}">
+                                        Ubah
+                                    </button>
+
+                                    <!-- Delete button -->
+                                    <form method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                                        <button type="submit" name="delete_user" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Yakin ingin menghapus user ini?')">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
+
+                            <!-- Modal Edit User -->
+                            <div class="modal fade" id="editUserModal{{ user.id }}" tabindex="-1" aria-labelledby="editUserModalLabel{{ user.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editUserModalLabel{{ user.id }}">Edit User - {{ user.username }}</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                {% with edit_form=form %}
+                                                    {{ edit_form.as_p }}
+                                                {% endwith %}
+                                                <input type="hidden" name="user_id" value="{{ user.id }}">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                <button type="submit" name="save_user" class="btn btn-primary">Simpan Perubahan</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         {% empty %}
-                            <tr><td colspan="4" class="text-center">Belum ada user.</td></tr>
+                            <tr><td colspan="5" class="text-center">Belum ada user.</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>

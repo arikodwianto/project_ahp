@@ -13,5 +13,8 @@ urlpatterns = [
     path('dashboard/jf-perencana/ahp-info/', views.ahp_info, name='ahp_info'),
     path('kriteria-perbandingan/', kriteria_dan_perbandingan, name='kriteria_perbandingan'),
     path('hasil-ahp/', hasil_ahp, name='hasil_ahp'),
+    path('perbandingan/', views.perbandingan_alternatif, name='perbandingan_alternatif'),
+    # Hasil Perhitungan AHP untuk Alternatif
+    path('hasil-ahp-alternatif/', views.hasil_ahp_alternatif, name='hasil_ahp_alternatif'),
   
 ]

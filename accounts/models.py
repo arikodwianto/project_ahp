@@ -96,6 +96,22 @@ class BobotKriteria(models.Model):
 
     def __str__(self):
         return f"{self.kriteria.nama}: {self.nilai_bobot:.4f}"
+    
+# Tambahan:
+class Alternatif(models.Model):
+    penggunaan = models.ForeignKey('PenggunaanBelanja', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.penggunaan.nama_penggunaan}"
+
+class PerbandinganAlternatif(models.Model):
+    kriteria = models.ForeignKey(Kriteria, on_delete=models.CASCADE)
+    alternatif_1 = models.ForeignKey(Alternatif, on_delete=models.CASCADE, related_name='alternatif1')
+    alternatif_2 = models.ForeignKey(Alternatif, on_delete=models.CASCADE, related_name='alternatif2')
+    nilai = models.FloatField()
+
+    def __str__(self):
+        return f"{self.kriteria.nama}: {self.alternatif_1} vs {self.alternatif_2} = {self.nilai}"
 
 
 

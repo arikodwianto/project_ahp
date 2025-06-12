@@ -7,7 +7,7 @@
 
 <!-- Tombol Tambah Kegiatan -->
 <button class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#modalTambahKegiatan">
-  <i class="bi bi-plus"></i>Tambah Kegiatan
+  <i class="bi bi-plus"></i> Tambah Kegiatan
 </button>
 
 <!-- Modal Tambah Kegiatan -->
@@ -46,16 +46,22 @@
     </div>
     <div class="collapse" id="bidang-{{ kode_bidang }}">
       <div class="card-body">
-
         {% if data.kegiatan_list %}
           {% for kegiatan in data.kegiatan_list %}
-            <div class="mb-4 border-bottom pb-3">
+            <div class="mb-4 border-bottom pb-3 ps-3">
+              <strong>Kegiatan:</strong> {{ kegiatan.nama_kegiatan }} ({{ kegiatan.kode_kegiatan }})
 
-              <h5>{{ kegiatan.kode_kegiatan }} - {{ kegiatan.nama_kegiatan }}</h5>
+              <!-- Form Ubah dan Hapus -->
+              <form method="post" class="d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="kegiatan_id" value="{{ kegiatan.id }}">
+               
+                <button type="submit" name="hapus_kegiatan" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus kegiatan ini?')">Hapus</button>
+              </form>
 
               <!-- Tombol Tambah Sub Kegiatan -->
               <button class="btn btn-sm btn-outline-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalSubKegiatan{{ kegiatan.id }}">
-                <i class="bi bi-plus"></i>Tambah Sub Kegiatan
+                <i class="bi bi-plus"></i> Tambah Sub Kegiatan
               </button>
 
               <!-- Modal Tambah Sub Kegiatan -->
@@ -97,136 +103,117 @@
                         <td>{{ sub.kode_sub_kegiatan }}</td>
                         <td>{{ sub.nama_sub_kegiatan }}</td>
                         <td>
-                          <!-- Tombol Tambah Rekening -->
                           <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalRekening{{ sub.id }}">
-                            <i class="bi bi-plus"></i>Tambah Rekening
+                            <i class="bi bi-plus"></i> Tambah Rekening
                           </button>
-
-                          <!-- Modal Tambah Rekening -->
-                          <div class="modal fade" id="modalRekening{{ sub.id }}" tabindex="-1" aria-labelledby="modalRekeningLabel{{ sub.id }}" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <form method="post" novalidate>
-                                  {% csrf_token %}
-                                  <div class="modal-header">
-                                    <h5 class="modal-title" id="modalRekeningLabel{{ sub.id }}">Tambah Rekening untuk {{ sub.nama_sub_kegiatan }}</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    {{ rekening_form.as_p }}
-                                    <input type="hidden" name="sub_kegiatan" value="{{ sub.id }}">
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="submit" name="submit_rekening" class="btn btn-success">Simpan</button>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                  </div>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
                         </td>
                       </tr>
 
-                      <!-- Tabel Rekening untuk Sub Kegiatan ini -->
+                      <!-- Modal Tambah Rekening -->
+                      <div class="modal fade" id="modalRekening{{ sub.id }}" tabindex="-1" aria-labelledby="modalRekeningLabel{{ sub.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <form method="post" novalidate>
+                              {% csrf_token %}
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="modalRekeningLabel{{ sub.id }}">Tambah Rekening untuk {{ sub.nama_sub_kegiatan }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                              </div>
+                              <div class="modal-body">
+                                {{ rekening_form.as_p }}
+                                <input type="hidden" name="sub_kegiatan" value="{{ sub.id }}">
+                              </div>
+                              <div class="modal-footer">
+                                <button type="submit" name="submit_rekening" class="btn btn-success">Simpan</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Tabel Rekening dan Penggunaan Belanja -->
                       <tr>
                         <td colspan="3" class="p-0">
-                          <table class="table table-sm table-bordered mb-3 mb-0">
+                          <table class="table table-sm table-bordered mb-0">
                             <thead>
                               <tr class="table-secondary">
                                 <th>Kode Rekening</th>
                                 <th>Nama Rekening</th>
+                                <th>Penggunaan Belanja</th>
                               </tr>
                             </thead>
                             <tbody>
-                              {% if sub.rekenings.all %}
-                                {% for rekening in sub.rekenings.all %}
-                                  <tr>
-                                    <td>{{ rekening.kode_rekening }}</td>
-                                    <td>{{ rekening.nama_rekening }}</td>
-                                    
+                              {% for rekening in sub.rekenings.all %}
+                                <tr>
+                                  <td>{{ rekening.kode_rekening }}</td>
+                                  <td>{{ rekening.nama_rekening }}</td>
+                                  <td>
+                                    <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalPenggunaanBelanja{{ rekening.id }}">
+                                      <i class="bi bi-plus"></i> Tambah Uraian
+                                    </button>
 
-                                  </tr>
-
-                                  <!-- Tombol Tambah Penggunaan Belanja -->
-                                  <tr>
-                                    <td colspan="2" class="p-2">
-                                      <button class="btn btn-sm btn-outline-success mb-2" data-bs-toggle="modal" data-bs-target="#modalPenggunaanBelanja{{ rekening.id }}">
-                                        <i class="bi bi-plus"></i> Tambah Uraian Belanja
-                                      </button>
-
-                                      <!-- Modal Tambah Penggunaan Belanja -->
-                                      <div class="modal fade" id="modalPenggunaanBelanja{{ rekening.id }}" tabindex="-1" aria-labelledby="modalPenggunaanBelanjaLabel{{ rekening.id }}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                          <div class="modal-content">
-                                            <form method="post" novalidate>
-                                              {% csrf_token %}
-                                              <div class="modal-header">
-                                                <h5 class="modal-title" id="modalPenggunaanBelanjaLabel{{ rekening.id }}">Tambah Penggunaan Belanja untuk {{ rekening.nama_rekening }}</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                                              </div>
-                                              <div class="modal-body">
-                                                {{ penggunaan_form.as_p }}
-                                                <input type="hidden" name="rekening" value="{{ rekening.id }}">
-                                              </div>
-                                              <div class="modal-footer">
-                                                <button type="submit" name="submit_penggunaan" class="btn btn-success">Simpan</button>
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                              </div>
-                                            </form>
-                                          </div>
+                                    <!-- Modal Tambah Penggunaan Belanja -->
+                                    <div class="modal fade" id="modalPenggunaanBelanja{{ rekening.id }}" tabindex="-1" aria-labelledby="modalPenggunaanBelanjaLabel{{ rekening.id }}" aria-hidden="true">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <form method="post" novalidate>
+                                            {% csrf_token %}
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="modalPenggunaanBelanjaLabel{{ rekening.id }}">Tambah Penggunaan Belanja</h5>
+                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                              {{ penggunaan_form.as_p }}
+                                              <input type="hidden" name="rekening" value="{{ rekening.id }}">
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="submit" name="submit_penggunaan" class="btn btn-success">Simpan</button>
+                                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            </div>
+                                          </form>
                                         </div>
                                       </div>
+                                    </div>
 
-                                      <!-- Tabel Penggunaan Belanja -->
-                                      <table class="table table-sm table-bordered mb-4">
-                                        <thead class="table-info">
+                                    <!-- Tabel Uraian -->
+                                    <table class="table table-sm mt-2">
+                                      <thead>
+                                        <tr>
+                                          <th>Uraian</th>
+                                          <th>Jumlah</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for penggunaan in rekening.penggunaan_belanjas.all %}
                                           <tr>
-                                            <th>Uraian Penggunaan</th>
-                                            <th>Jumlah</th>
+                                            <td>{{ penggunaan.nama_penggunaan }}</td>
+                                            <td>{{ penggunaan.jumlah }}</td>
                                           </tr>
-                                        </thead>
-                                        <tbody>
-                                          {% for penggunaan in rekening.penggunaan_belanjas.all %}
-                                            <tr>
-                                              <td>#{{ penggunaan.nama_penggunaan }}</td>
-                                              <td>{{ penggunaan.jumlah }}</td>
-                                            </tr>
-                                          {% empty %}
-                                            <tr>
-                                              <td colspan="2" class="text-center text-muted">Belum ada penggunaan belanja.</td>
-                                            </tr>
-                                          {% endfor %}
-                                        </tbody>
-                                      </table>
-                                    </td>
-                                  </tr>
-
-                                {% endfor %}
-                              {% else %}
-                                <tr>
-                                  <td colspan="2" class="text-center text-muted">
-                                    <i class="bi bi-wallet" style="font-size: 2rem;"></i><br>
-                                    <small>Belum ada rekening</small>
+                                        {% empty %}
+                                          <tr><td colspan="2" class="text-muted">Belum ada uraian.</td></tr>
+                                        {% endfor %}
+                                      </tbody>
+                                    </table>
                                   </td>
                                 </tr>
-                              {% endif %}
+                              {% empty %}
+                                <tr>
+                                  <td colspan="3" class="text-center text-muted">Belum ada rekening.</td>
+                                </tr>
+                              {% endfor %}
                             </tbody>
                           </table>
                         </td>
                       </tr>
-
                     {% endfor %}
                   {% else %}
                     <tr>
-                      <td colspan="3" class="text-center text-muted">
-                        <i class="bi bi-card-list" style="font-size: 2rem;"></i><br>
-                        <small>Belum ada sub kegiatan</small>
-                      </td>
+                      <td colspan="3" class="text-center text-muted">Belum ada sub kegiatan.</td>
                     </tr>
                   {% endif %}
                 </tbody>
               </table>
-
             </div>
           {% endfor %}
         {% else %}
@@ -235,7 +222,6 @@
             <p class="mt-2">Belum ada kegiatan di bidang ini.</p>
           </div>
         {% endif %}
-
       </div>
     </div>
   </div>
