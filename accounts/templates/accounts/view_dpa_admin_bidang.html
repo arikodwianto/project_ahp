@@ -1,0 +1,44 @@
+{% extends 'admin_bidang.html' %}
+{% block content %}
+
+<h2 class="mb-4 text-success">DPA Disetujui untuk Bidang Anda</h2>
+<div class="d-flex justify-content-end mb-3">
+  <a href="{% url 'cetak_dpa_pdf' %}" class="btn btn-primary">
+    <i class="bi bi-printer"></i> Cetak DPA
+  </a>
+</div>
+
+<table class="table table-bordered">
+    <thead class="table-success">
+        <tr>
+            <th>Nama Penggunaan</th>
+            <th>Jumlah</th>
+            <th>Kode Rekening</th>
+            <th>Nama Rekening</th>
+            <th>Kode Kegiatan</th>
+            <th>Nama Kegiatan</th>
+            <th>Bidang</th>
+            <th>Tanggal Persetujuan</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dpa in dpa_list %}
+        <tr>
+            <td>{{ dpa.nama_penggunaan }}</td>
+            <td>{{ dpa.jumlah }}</td>
+            <td>{{ dpa.kode_rekening }}</td>
+            <td>{{ dpa.nama_rekening }}</td>
+            <td>{{ dpa.kode_kegiatan }}</td>
+            <td>{{ dpa.nama_kegiatan }}</td>
+            <td>{{ dpa.bidang }}</td>
+            <td>{{ dpa.tanggal_persetujuan|date:"d-m-Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8" class="text-center text-muted">Tidak ada DPA disetujui untuk bidang Anda.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'kadis.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h3 class="mb-4">Statistik Kepala Dinas</h3>
+
+  <!-- Statistik Cards -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card bg-info text-white shadow-sm">
+        <div class="card-body d-flex align-items-center">
+          <i class="bi bi-people-fill fs-1 me-3"></i>
+          <div>
+            <h5 class="card-title">Jumlah User</h5>
+            <p class="fs-4 mb-0">{{ jumlah_user }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-success text-white shadow-sm">
+        <div class="card-body d-flex align-items-center">
+          <i class="bi bi-check-circle-fill fs-1 me-3"></i>
+          <div>
+            <h5 class="card-title">Kegiatan Disetujui</h5>
+            <p class="fs-4 mb-0">{{ jumlah_disetujui }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-danger text-white shadow-sm">
+        <div class="card-body d-flex align-items-center">
+          <i class="bi bi-x-circle-fill fs-1 me-3"></i>
+          <div>
+            <h5 class="card-title">Kegiatan Ditolak</h5>
+            <p class="fs-4 mb-0">{{ jumlah_ditolak }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Diagram Lingkaran & Penjelasan AHP -->
+  <div class="row">
+    <!-- Kiri: Diagram Lingkaran -->
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Diagram Lingkaran</h5>
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kanan: Penjelasan AHP -->
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Apa itu AHP?</h5>
+          <p style="font-size: 16px;">
+            Analytic Hierarchy Process (AHP) adalah metode pengambilan keputusan yang dikembangkan oleh Thomas L. Saaty pada 1970-an. 
+            Metode ini membantu pengambil keputusan dalam menyusun dan menganalisis kompleksitas masalah dengan cara memecahnya menjadi beberapa 
+            tingkatan hierarki, mulai dari tujuan utama, kriteria, subkriteria (jika ada), hingga alternatif keputusan.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const disetujui = {{ jumlah_disetujui }};
+  const ditolak = {{ jumlah_ditolak }};
+
+  // Pie Chart
+  new Chart(document.getElementById('pieChart'), {
+    type: 'pie',
+    data: {
+      labels: ['Disetujui', 'Ditolak'],
+      datasets: [{
+        data: [disetujui, ditolak],
+        backgroundColor: ['#28a745', '#dc3545']
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+</script>
+{% endblock %}

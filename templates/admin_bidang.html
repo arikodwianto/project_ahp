@@ -97,7 +97,7 @@
 
   <!-- Dashboard -->
   <li class="nav-item active">
-      <a class="nav-link" href="{% url 'ahp_info' %} ">
+      <a class="nav-link" href="{% url 'info_admin_bidang' %}">
           <i class="fas fa-home" style="color: gray;"></i>
           <span>Dashboard</span>
       </a>
@@ -117,7 +117,7 @@
       <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Data Kegiatan </h6>
-              <a class="collapse-item" href="{% url 'jf_perencana_dashboard' %}">
+              <a class="collapse-item" href="{% url 'admin_bidang_kegiatan' %}">
                   <i class="fas fa-user" style="color: gray;"></i> Kegiatan
               </a>
           </div>
@@ -132,65 +132,24 @@
     aria-expanded="true" aria-controls="collapseAHP1">
     <i class="fas fa-table" style="color: gray;"></i> <!-- Analisis data -->
 
-    <span>Analisa</span>
+    <span>DPA</span>
   </a>
   <div id="collapseAHP1" class="collapse" aria-labelledby="headingAHP1" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-      <h6 class="collapse-header">Perhitungan Kriteria</h6>
-      <a class="collapse-item" href="{% url 'kriteria_perbandingan' %}">
-        <i class="fas fa-balance-scale" style="color: gray;"></i> Perhitungan Kriteria
+      <h6 class="collapse-header">DPA Kegiatan</h6>
+      <a class="collapse-item" href="{% url 'view_dpa_admin_bidang' %}">
+        <i class="fas fa-balance-scale" style="color: gray;"></i> DPA Kegiatan
       </a>
-      <h6 class="collapse-header">Perhitungan Alternatif</h6>
-      <a class="collapse-item" href="{% url 'perbandingan_alternatif' %}">
-        <i class="fas fa-tasks" style="color: gray;"></i> Perhitungan Alternatif
-      </a>
+      
     </div>
   </div>
 </li>
 
 <!-- Hasil AHP -->
-<li class="nav-item">
-  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAHP2"
-    aria-expanded="true" aria-controls="collapseAHP2">
-    <i class="fas fa-poll" style="color: gray;"></i> <!-- Hasil polling / evaluasi -->
-    <span>Hasil Analisa</span>
-  </a>
-  <div id="collapseAHP2" class="collapse" aria-labelledby="headingAHP2" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-      <h6 class="collapse-header">Hasil Perhitungan AHP</h6>
-      <a class="collapse-item" href="{% url 'hasil_ahp' %}">
-        <i class="bi bi-graph-up" style="color: gray;"></i> Hasil Analisa Kriteria
 
-      </a>
-       <h6 class="collapse-header">Hasil Perhitungan AHP</h6>
-      <a class="collapse-item" href="{% url 'hasil_alternatif' %}">
-        <i class="bi bi-bar-chart-line" style="color: gray;"></i> Hasil Analisa Alternatif
-
-      </a>
-     
-    </div>
-  </div>
-</li>
 
 
   <hr class="sidebar-divider">
-  <li class="nav-item">
-  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAHP2"
-    aria-expanded="true" aria-controls="collapseAHP2">
-    <i class="fas fa-poll" style="color: gray;"></i> <!-- Hasil polling / evaluasi -->
-    <span>DPA</span>
-  </a>
-  <div id="collapseAHP2" class="collapse" aria-labelledby="headingAHP2" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-      <h6 class="collapse-header">Hasil Perhitungan AHP</h6>
-      <a class="collapse-item" href="{% url 'view_dpa_jf_perencana' %}">
-        <i class="bi bi-graph-up" style="color: gray;"></i> Hasil Analisa Kriteria
-
-      </a>
-     
-    </div>
-  </div>
-</li>
   
   <div class="version" id="version-ruangadmin"></div>
 </ul>

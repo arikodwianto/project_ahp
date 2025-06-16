@@ -1,0 +1,55 @@
+{% extends "admin.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-primary fw-bold">Hasil Perbandingan Alternatif</h2>
+
+  {% for item in hasil_per_kriteria %}
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">Kriteria: {{ item.kriteria }}</h5>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-bordered mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Alternatif</th>
+            <th>Bobot</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for hasil in item.hasil %}
+          <tr>
+            <td>{{ hasil.alternatif }}</td>
+            <td>{{ hasil.bobot }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endfor %}
+
+  <h4 class="mt-5 text-primary fw-bold">Ranking Akhir Alternatif</h4>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered mt-2">
+      <thead class="table-primary">
+        <tr>
+          <th>Peringkat</th>
+          <th>Alternatif</th>
+          <th>Nilai Akhir</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for alt in ranking_akhir %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ alt.alternatif }}</td>
+          <td>{{ alt.nilai }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

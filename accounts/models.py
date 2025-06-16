@@ -97,22 +97,68 @@ class BobotKriteria(models.Model):
     def __str__(self):
         return f"{self.kriteria.nama}: {self.nilai_bobot:.4f}"
     
-# Tambahan:
-class Alternatif(models.Model):
-    penggunaan = models.ForeignKey('PenggunaanBelanja', on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f"{self.penggunaan.nama_penggunaan}"
+ # sesuaikan jika kamu meletakkan model Kriteria di file terpisah
 
 class PerbandinganAlternatif(models.Model):
     kriteria = models.ForeignKey(Kriteria, on_delete=models.CASCADE)
-    alternatif_1 = models.ForeignKey(Alternatif, on_delete=models.CASCADE, related_name='alternatif1')
-    alternatif_2 = models.ForeignKey(Alternatif, on_delete=models.CASCADE, related_name='alternatif2')
+    alternatif_1 = models.ForeignKey(PenggunaanBelanja, on_delete=models.CASCADE, related_name='alt1')
+    alternatif_2 = models.ForeignKey(PenggunaanBelanja, on_delete=models.CASCADE, related_name='alt2')
     nilai = models.FloatField()
 
     def __str__(self):
         return f"{self.kriteria.nama}: {self.alternatif_1} vs {self.alternatif_2} = {self.nilai}"
 
+from django.db import models
+from django.utils import timezone
+
+class PersetujuanPenggunaanBelanja(models.Model):
+    # Simpan data snapshot dari PenggunaanBelanja
+    penggunaan_belanja_id = models.IntegerField()  # ID asli untuk referensi (optional)
+    nama_penggunaan = models.CharField(max_length=200)
+    jumlah = models.DecimalField(max_digits=14, decimal_places=2)
+    
+    # Info dari relasi Rekening > SubKegiatan > Kegiatan (salin juga)
+    kode_rekening = models.CharField(max_length=20)
+    nama_rekening = models.CharField(max_length=100)
+    
+    kode_sub_kegiatan = models.CharField(max_length=20)
+    nama_sub_kegiatan = models.CharField(max_length=100)
+    
+    kode_kegiatan = models.CharField(max_length=20)
+    nama_kegiatan = models.CharField(max_length=100)
+    bidang = models.CharField(max_length=100)
+    
+    disetujui = models.BooleanField(default=False)
+    ditolak = models.BooleanField(default=False)
+    tanggal_persetujuan = models.DateTimeField(null=True, blank=True)
+
+    def set_approved(self):
+        self.disetujui = True
+        self.ditolak = False
+        self.tanggal_persetujuan = timezone.now()
+        self.save()
+
+    def set_rejected(self):
+        self.disetujui = False
+        self.ditolak = True
+        self.tanggal_persetujuan = timezone.now()
+        self.save()
+
+    def __str__(self):
+        status = "Disetujui" if self.disetujui else ("Ditolak" if self.ditolak else "Belum Disetujui")
+        return f"{self.nama_penggunaan} ({status})"
+
+from django.db import models
+from django.utils import timezone
+
+class DPA(models.Model):
+    penggunaan_belanja = models.ForeignKey('PenggunaanBelanja', on_delete=models.CASCADE, related_name='dpa_entries')
+    status = models.CharField(max_length=20, choices=[('disetujui', 'Disetujui'), ('ditolak', 'Ditolak')], default='disetujui')
+    tanggal_persetujuan = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"DPA untuk {self.penggunaan_belanja.nama_penggunaan} - Status: {self.status}"
 
 
 

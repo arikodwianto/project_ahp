@@ -115,9 +115,44 @@ class PerbandinganKriteriaForm(forms.Form):
                 self.fields[field_name].label_left = label_left
                 self.fields[field_name].label_right = label_right
 
+from django import forms
+from .models import Kriteria, PenggunaanBelanja
 
+SKALA_PERBANDINGAN = [
+    (1, 'Sama penting'),
+    (2, 'Sedikit lebih penting'),
+    (3, 'Lebih penting'),
+    (4, 'Lebih dari cukup penting'),
+    (5, 'Sangat penting'),
+    (6, 'Antara sangat dan sangat sekali penting'),
+    (7, 'Sangat sekali penting'),
+    (8, 'Antara sangat sekali dan ekstrim'),
+    (9, 'Ekstrim penting'),
+]
 
+class PerbandinganAlternatifForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
+        kriteria_list = Kriteria.objects.all()
+        alternatif_list = PenggunaanBelanja.objects.all()
+
+        for kriteria in kriteria_list:
+            for i in range(len(alternatif_list)):
+                for j in range(i + 1, len(alternatif_list)):
+                    field_name = f'kriteria_{kriteria.id}_alt_{alternatif_list[i].id}_vs_{alternatif_list[j].id}'
+                    label_left = alternatif_list[i].nama_penggunaan
+                    label_right = alternatif_list[j].nama_penggunaan
+                    self.fields[field_name] = forms.ChoiceField(
+                        label=f"{label_left} vs {label_right}",
+                        choices=SKALA_PERBANDINGAN,
+                        widget=forms.Select(attrs={
+                            'class': 'form-control',
+                        }),
+                    )
+                    self.fields[field_name].label_left = label_left
+                    self.fields[field_name].label_right = label_right
+                    self.fields[field_name].kriteria_nama = kriteria.nama
 
 
 

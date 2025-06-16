@@ -1,31 +1,101 @@
 {% extends 'admin.html' %}
 {% block content %}
 <div class="container mt-4">
-  <h2 class="mb-3">Tentang AHP dan Skala Saaty</h2>
-  
-  <div class="card mb-4 shadow-sm">
-    <div class="card-body">
-      <h5>Apa itu AHP?</h5>
-      <p>
-        Analytic Hierarchy Process (AHP) adalah metode pengambilan keputusan yang dikembangkan oleh Thomas L. Saaty pada 1970-an. 
-        Metode ini membantu pengambil keputusan dalam menyusun dan menganalisis kompleksitas masalah dengan cara memecahnya menjadi beberapa 
-        tingkatan hierarki yang lebih sederhana, mulai dari tujuan utama, kriteria, subkriteria (jika ada), hingga alternatif keputusan.
-      </p>
-      <p>
-        AHP menggunakan perbandingan berpasangan antar elemen dalam suatu level untuk menentukan bobot prioritas relatif. 
-        Dengan demikian, keputusan dibuat berdasarkan nilai bobot yang diperoleh setelah melakukan perbandingan dan perhitungan konsistensi.
-      </p>
-      <p>
-        Metode ini sangat berguna untuk masalah keputusan multi-kriteria dan telah banyak diterapkan di berbagai bidang, seperti manajemen, 
-        perencanaan anggaran, pemilihan proyek, dan lainnya.
-      </p>
+  <h2 class="mb-4">Tentang AHP dan Skala Saaty</h2>
+
+  <div class="row">
+    <!-- Statistik Cards -->
+    <div class="col-md-4 mb-4">
+      <div class="card text-white bg-primary shadow h-100">
+        <div class="card-body d-flex align-items-center">
+          <i class="bi bi-layers-fill fs-1 me-3"></i>
+          <div>
+            <h6 class="mb-1">Jumlah Kegiatan</h6>
+            <h4 class="mb-0">{{ jumlah_kegiatan }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card text-white bg-success shadow h-100">
+        <div class="card-body d-flex align-items-center">
+          <i class="bi bi-diagram-3-fill fs-1 me-3"></i>
+          <div>
+            <h6 class="mb-1">Jumlah Sub Kegiatan</h6>
+            <h4 class="mb-0">{{ jumlah_subkegiatan }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card text-white bg-warning shadow h-100">
+        <div class="card-body d-flex align-items-center">
+          <i class="bi bi-journal-text fs-1 me-3"></i>
+          <div>
+            <h6 class="mb-1">Jumlah Rekening</h6>
+            <h4 class="mb-0">{{ jumlah_rekening }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card text-white bg-danger shadow h-100">
+        <div class="card-body d-flex align-items-center">
+          <i class="bi bi-currency-dollar fs-1 me-3"></i>
+          <div>
+            <h6 class="mb-1">Jumlah Penggunaan</h6>
+            <h4 class="mb-0">{{ jumlah_penggunaan }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card text-white bg-info shadow h-100">
+        <div class="card-body d-flex align-items-center">
+          <i class="bi bi-sliders fs-1 me-3"></i>
+          <div>
+            <h6 class="mb-1">Jumlah Kriteria</h6>
+            <h4 class="mb-0">{{ jumlah_kriteria }}</h4>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="card shadow-sm">
+  <!-- Baris untuk Chart dan Penjelasan AHP -->
+  <div class="row mb-4">
+    <!-- Chart -->
+    <div class="col-md-6">
+      <div class="card shadow h-100">
+        <div class="card-body">
+          <h5 class="card-title">Distribusi Penggunaan Belanja</h5>
+          <canvas id="penggunaanChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Penjelasan AHP -->
+    <div class="col-md-6">
+      <div class="card shadow h-100">
+        <div class="card-body">
+          <h5 class="card-title">Apa itu AHP?</h5>
+          <p style="font-size: 16px;">Analytic Hierarchy Process (AHP) adalah metode pengambilan keputusan yang dikembangkan oleh Thomas L. Saaty pada 1970-an. 
+            Metode ini membantu pengambil keputusan dalam menyusun dan menganalisis kompleksitas masalah dengan cara memecahnya menjadi beberapa 
+            tingkatan hierarki, mulai dari tujuan utama, kriteria, subkriteria (jika ada), hingga alternatif keputusan.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skala Saaty -->
+  <div class="card shadow mb-4">
     <div class="card-body">
-      <h5>Skala Saaty</h5>
-      <p>Skala Saaty digunakan dalam AHP untuk mengukur tingkat kepentingan relatif antara dua elemen pada perbandingan berpasangan. Berikut tabel skala penilaian tersebut:</p>
+      <h4 class="card-title">Skala Saaty</h4>
+      <p style="font-size: 16px;">Skala Saaty digunakan dalam AHP untuk mengukur tingkat kepentingan relatif antara dua elemen. Nilai skala berkisar dari 1 (sama penting) hingga 9 (mutlak sangat penting).</p>
       <table class="table table-bordered text-center">
         <thead class="table-light">
           <tr>
@@ -35,39 +105,33 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Sama penting</td>
-            <td>Kedua elemen memiliki bobot yang setara dalam pengambilan keputusan.</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Sedikit lebih penting</td>
-            <td>Satu elemen sedikit lebih diprioritaskan dibanding elemen lainnya.</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>Lebih penting</td>
-            <td>Satu elemen jelas lebih penting dibanding yang lain.</td>
-          </tr>
-          <tr>
-            <td>7</td>
-            <td>Sangat penting</td>
-            <td>Satu elemen sangat dominan dalam perbandingan.</td>
-          </tr>
-          <tr>
-            <td>9</td>
-            <td>Mutlak sangat penting</td>
-            <td>Satu elemen mutlak lebih penting dibanding elemen lainnya.</td>
-          </tr>
-          <tr>
-            <td>2,4,6,8</td>
-            <td>Nilai antara</td>
-            <td>Nilai antara dua angka utama untuk mengekspresikan nilai kepentingan yang menengah.</td>
-          </tr>
+          <tr><td>1</td><td>Sama penting</td><td>Bobot setara dalam keputusan.</td></tr>
+          <tr><td>3</td><td>Sedikit lebih penting</td><td>Satu elemen sedikit lebih diprioritaskan.</td></tr>
+          <tr><td>5</td><td>Lebih penting</td><td>Satu elemen jelas lebih penting.</td></tr>
+          <tr><td>7</td><td>Sangat penting</td><td>Satu elemen sangat dominan.</td></tr>
+          <tr><td>9</td><td>Mutlak sangat penting</td><td>Satu elemen mutlak dominan.</td></tr>
+          <tr><td>2,4,6,8</td><td>Nilai antara</td><td>Transisi antara dua tingkat kepentingan.</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctxPenggunaan = document.getElementById('penggunaanChart').getContext('2d');
+  const penggunaanChart = new Chart(ctxPenggunaan, {
+    type: 'pie',
+    data: {
+      labels: [{% for p in penggunaan_data %}"{{ p.nama_penggunaan }}",{% endfor %}],
+      datasets: [{
+        label: 'Total Belanja',
+        data: [{% for p in penggunaan_data %}{{ p.total }},{% endfor %}],
+        backgroundColor: ['#4e73df','#1cc88a','#36b9cc','#f6c23e','#e74a3b','#858796'],
+      }]
+    }
+  });
+</script>
 {% endblock %}

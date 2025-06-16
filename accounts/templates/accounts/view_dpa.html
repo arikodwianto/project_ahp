@@ -1,0 +1,57 @@
+{% extends 'kadis.html' %}
+{% block content %}
+<h2 class="mb-4">Daftar DPA (Berdasarkan Persetujuan Kepala Dinas)</h2>
+
+<a href="{% url 'cetak_dpa_pdf' %}" class="btn btn-primary mb-3">
+  <i class="bi bi-printer"></i> Cetak DPA
+</a>
+
+<style>
+  /* Header tabel background biru tua dan teks putih */
+  table.custom-table thead {
+    background-color: #0d6efd; /* bootstrap primary blue */
+    color: white;
+  }
+  /* Baris genap background biru muda */
+  table.custom-table tbody tr:nth-child(even) {
+    background-color: #cfe2ff; /* biru muda */
+  }
+  /* Baris ganjil background lebih cerah */
+  table.custom-table tbody tr:nth-child(odd) {
+    background-color: #e7f1ff;
+  }
+</style>
+
+<table class="table table-bordered custom-table">
+    <thead>
+        <tr>
+            <th>Nama Penggunaan</th>
+            <th>Jumlah</th>
+            <th>Kode Rekening</th>
+            <th>Nama Rekening</th>
+            <th>Kode Kegiatan</th>
+            <th>Nama Kegiatan</th>
+            <th>Bidang</th>
+            <th>Tanggal Persetujuan</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dpa in dpa_list %}
+        <tr>
+            <td>{{ dpa.nama_penggunaan }}</td>
+            <td>{{ dpa.jumlah }}</td>
+            <td>{{ dpa.kode_rekening }}</td>
+            <td>{{ dpa.nama_rekening }}</td>
+            <td>{{ dpa.kode_kegiatan }}</td>
+            <td>{{ dpa.nama_kegiatan }}</td>
+            <td>{{ dpa.bidang }}</td>
+            <td>{{ dpa.tanggal_persetujuan|date:"d-m-Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8" class="text-center">Belum ada data DPA yang disetujui.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

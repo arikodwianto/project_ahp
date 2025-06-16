@@ -1,0 +1,138 @@
+{% extends 'admin_bidang.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Informasi Admin Bidang ({{ bidang|title }})</h2>
+
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-primary shadow">
+        <div class="card-body">
+          <h5 class="card-title">Jumlah Kegiatan</h5>
+          <p class="fs-3">{{ jumlah_kegiatan }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-success shadow">
+        <div class="card-body">
+          <h5 class="card-title">Jumlah Sub Kegiatan</h5>
+          <p class="fs-3">{{ jumlah_subkegiatan }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-info shadow">
+        <div class="card-body">
+          <h5 class="card-title">Jumlah Rekening</h5>
+          <p class="fs-3">{{ jumlah_rekening }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-warning shadow">
+        <div class="card-body">
+          <h5 class="card-title">Jumlah Penggunaan Belanja</h5>
+          <p class="fs-3">{{ jumlah_penggunaan }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-success shadow">
+        <div class="card-body">
+          <h5 class="card-title">Jumlah Disetujui</h5>
+          <p class="fs-3">{{ jumlah_disetujui }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-danger shadow">
+        <div class="card-body">
+          <h5 class="card-title">Jumlah Ditolak</h5>
+          <p class="fs-3">{{ jumlah_ditolak }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart -->
+  <div class="card mt-5 shadow">
+    <div class="card-header bg-dark text-white">
+      <h5 class="mb-0">Visualisasi Data Bidang</h5>
+    </div>
+    <div class="card-body">
+      <canvas id="dataChart" height="200"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Chart Configuration -->
+<script>
+  const ctx = document.getElementById('dataChart').getContext('2d');
+  const dataChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [
+        'Kegiatan',
+        'Sub Kegiatan',
+        'Rekening',
+        'Penggunaan Belanja',
+        'Disetujui',
+        'Ditolak'
+      ],
+      datasets: [{
+        label: 'Jumlah',
+        data: [
+          {{ jumlah_kegiatan }},
+          {{ jumlah_subkegiatan }},
+          {{ jumlah_rekening }},
+          {{ jumlah_penggunaan }},
+          {{ jumlah_disetujui }},
+          {{ jumlah_ditolak }}
+        ],
+        backgroundColor: [
+          'rgba(54, 162, 235, 0.7)',
+          'rgba(40, 167, 69, 0.7)',
+          'rgba(23, 162, 184, 0.7)',
+          'rgba(255, 193, 7, 0.7)',
+          'rgba(40, 167, 69, 0.7)',
+          'rgba(220, 53, 69, 0.7)'
+        ],
+        borderColor: [
+          'rgba(54, 162, 235, 1)',
+          'rgba(40, 167, 69, 1)',
+          'rgba(23, 162, 184, 1)',
+          'rgba(255, 193, 7, 1)',
+          'rgba(40, 167, 69, 1)',
+          'rgba(220, 53, 69, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      scales: {
+        x: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    }
+  });
+</script>
+{% endblock %}
