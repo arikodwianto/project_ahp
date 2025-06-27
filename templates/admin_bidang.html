@@ -165,7 +165,7 @@
                     </button>
                     <div class="bg-navbar text-white py-2 d-flex align-items-center w-100">
                       <marquee behavior="scroll" direction="left" scrollamount="5" class="mr-auto">
-  Selamat datang di Sistem Prioritas Perencanaan Anggaran menggunakan Metode AHP pada Dinas Pekerjaan Umum Penataan Ruang dan Pertanahan Kabupaten Bintan. Pastikan data kegiatan Anda selalu akurat untuk hasil prioritas yang optimal.
+  Selamat datang {{ request.user.role}} {{ bidang|title }} di Sistem Prioritas Perencanaan Anggaran menggunakan Metode AHP pada Dinas Pekerjaan Umum Penataan Ruang dan Pertanahan Kabupaten Bintan. Pastikan data kegiatan Anda selalu akurat untuk hasil prioritas yang optimal.
 </marquee>
 
                       <span id="clock" class="ml-3"></span>

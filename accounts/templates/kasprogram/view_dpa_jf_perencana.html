@@ -1,18 +1,25 @@
 {% extends 'admin.html' %}
 {% load static %}
-{% block content %}
 
+{% block content %}
 <div class="container mt-4">
   <h2 class="mb-4 text-primary">Daftar DPA (JF Perencana)</h2>
-<div class="d-flex justify-content-end mb-3">
-  <a href="{% url 'cetak_dpa_pdf' %}" class="btn btn-primary">
-    <i class="bi bi-printer"></i> Cetak DPA
-  </a>
-</div>
 
-  <table class="table table-bordered custom-table">
-      <thead>
-          <tr>
+  <div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'cetak_dpa_pdf' %}" class="btn btn-primary">
+      <i class="bi bi-printer"></i> Cetak DPA
+    </a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <strong>Data DPA</strong>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-bordered mb-0">
+          <thead class="table-light text-center">
+            <tr>
               <th>Nama Penggunaan</th>
               <th>Jumlah</th>
               <th>Kode Rekening</th>
@@ -21,11 +28,11 @@
               <th>Nama Kegiatan</th>
               <th>Bidang</th>
               <th>Tanggal Persetujuan</th>
-          </tr>
-      </thead>
-      <tbody>
-          {% for dpa in dpa_list %}
-          <tr>
+            </tr>
+          </thead>
+          <tbody>
+            {% for dpa in dpa_list %}
+            <tr>
               <td>{{ dpa.nama_penggunaan }}</td>
               <td>{{ dpa.jumlah }}</td>
               <td>{{ dpa.kode_rekening }}</td>
@@ -34,14 +41,16 @@
               <td>{{ dpa.nama_kegiatan }}</td>
               <td>{{ dpa.bidang }}</td>
               <td>{{ dpa.tanggal_persetujuan|date:"d-m-Y" }}</td>
-          </tr>
-          {% empty %}
-          <tr>
+            </tr>
+            {% empty %}
+            <tr>
               <td colspan="8" class="text-center">Belum ada data DPA yang tersedia.</td>
-          </tr>
-          {% endfor %}
-      </tbody>
-  </table>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
-
 {% endblock %}

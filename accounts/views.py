@@ -54,7 +54,7 @@ from .forms import (
 
 
 class CustomLoginView(LoginView):
-    template_name = 'accounts/login.html'
+    template_name = 'auth/login.html'
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -66,7 +66,7 @@ class CustomLoginView(LoginView):
 
         if hasattr(user, 'role'):
             if user.role == 'superadmin' or user.role == 'kepala_dinas':
-                return reverse_lazy('kepala_dinas_dashboard')
+                return reverse_lazy('statistik_kadis')
             elif user.role == 'admin_bidang':
                 return reverse_lazy('info_admin_bidang')
             elif user.role == 'jf_perencana':
@@ -113,7 +113,7 @@ def kepala_dinas_dashboard(request):
 
     user_list = CustomUser.objects.filter(role__in=['jf_perencana', 'admin_bidang'])
 
-    return render(request, 'accounts/kepala_dinas_dashboard.html', {
+    return render(request, 'kadis/kepala_dinas_dashboard.html', {
         'form': form,
         'user_list': user_list
     })
@@ -135,7 +135,7 @@ def statistik_kadis(request):
         'jumlah_ditolak': jumlah_ditolak,
     }
 
-    return render(request, 'accounts/statistik_kadis.html', context)
+    return render(request, 'kadis/statistik_kadis.html', context)
 
 
 
@@ -148,7 +148,7 @@ def kepala_dinas_kegiatan_view(request):
 
     kegiatan_list = Kegiatan.objects.all()
 
-    return render(request, 'accounts/kepala_dinas_kegiatan.html', {
+    return render(request, 'kadis/kepala_dinas_kegiatan.html', {
         'kegiatan_list': kegiatan_list
     })
 
@@ -190,12 +190,10 @@ def persetujuan_kepala_dinas(request):
         messages.success(request, "Persetujuan dan penolakan berhasil disimpan.")
         return redirect('persetujuan_kepala_dinas')
 
-    return render(request, 'accounts/persetujuan_kepala_dinas.html', {
+    return render(request, 'kadis/persetujuan_kepala_dinas.html', {
         'penggunaan_belanja_belum_disetujui': penggunaan_belanja_belum_disetujui,
         'persetujuan_list': persetujuan_list
     })
-
-
 
 
 @login_required
@@ -206,11 +204,11 @@ def view_dpa(request):
     # Filter berdasarkan field boolean 'disetujui'
     dpa_list = PersetujuanPenggunaanBelanja.objects.filter(disetujui=True).order_by('-tanggal_persetujuan')
 
-    return render(request, 'accounts/view_dpa.html', {
+    return render(request, 'kadis/view_dpa.html', {
         'dpa_list': dpa_list
     })
 
-
+#Untuk Akun JF Perencana
 @login_required
 def view_dpa_jf_perencana(request):
     if request.user.role != 'jf_perencana':
@@ -219,9 +217,11 @@ def view_dpa_jf_perencana(request):
     # Hanya data yang disetujui
     dpa_list = PersetujuanPenggunaanBelanja.objects.filter(disetujui=True).order_by('-tanggal_persetujuan')
 
-    return render(request, 'accounts/view_dpa_jf_perencana.html', {
+    return render(request, 'kasprogram/view_dpa_jf_perencana.html', {
         'dpa_list': dpa_list
     })
+
+# Untuk Akun Admin Bidang
 @login_required
 def view_dpa_admin_bidang(request):
     user = request.user
